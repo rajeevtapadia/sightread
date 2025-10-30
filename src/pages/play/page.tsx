@@ -169,6 +169,36 @@ export default function PlaySongPage() {
       player.seek(player.currentSongTime - 16 / 1000)
     } else if (evt.code === 'Period') {
       player.seek(player.currentSongTime + 16 / 1000)
+    } else if (evt.code === 'Slash') {
+      setStatsVisible(!statsVisible)
+    } else if (evt.code === 'Equal') {
+      player.increaseBpm()
+    } else if (evt.code === 'Minus') {
+      player.decreaseBpm()
+    } else if (evt.code === 'Semicolon') {
+      setSongConfig({ ...songConfig, waiting: !waiting })
+    } else if (evt.code === 'KeyP') {
+      if (isLooping) {
+        handleLoopingToggle(false)
+      } else {
+        handleLoopingToggle(true)
+      }
+    } else if (evt.code === 'BracketLeft') {
+      setSongConfig({ ...songConfig, left: !songConfig.left })
+    } else if (evt.code === 'BracketRight') {
+      setSongConfig({ ...songConfig, right: !songConfig.right })
+    } else if (evt.code === 'Quote') {
+      if (songConfig.visualization === 'falling-notes') {
+        setSongConfig({ ...songConfig, visualization: 'sheet' })
+      } else {
+        setSongConfig({ ...songConfig, visualization: 'falling-notes' })
+      }
+    } else if (evt.code === 'Digit0') {
+      player.seek(0)
+    } else if (evt.code === 'KeyO') {
+      if (isLooping) {
+        player.seek(range[0])
+      }
     }
   })
 
