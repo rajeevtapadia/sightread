@@ -1,3 +1,4 @@
+import Toast from '@/components/Toast'
 import { SongScrubBar } from '@/features/controls'
 import { useSong } from '@/features/data'
 import { useSongMetadata } from '@/features/data/library'
@@ -15,6 +16,7 @@ import {
   useWakeLock,
 } from '@/hooks'
 import { MidiStateEvent, SongSource } from '@/types'
+import * as RadixToast from '@radix-ui/react-toast'
 import clsx from 'clsx'
 import { useAtomValue } from 'jotai'
 import { AlertCircle, ArrowLeft, RefreshCw } from 'lucide-react'
@@ -121,6 +123,7 @@ export default function PlaySongPage() {
   )
   const isLooping = !!range
   const requiresPermission = useAtomValue(requiresPermissionAtom)
+  const [toastMsg, setToastMsg] = useState<string>('')
 
   const [songConfig, setSongConfig] = useSongSettings(id)
   const isRecording = !!recording
@@ -317,6 +320,8 @@ export default function PlaySongPage() {
               />
             </div>
             {statsVisible && <StatsPopup />}
+            <Toast open={!!toastMsg} removeToast={() => setToastMsg('')} title={toastMsg} />
+            <RadixToast.Viewport className="fixed right-4 bottom-4 z-50 flex w-80 max-w-[100vw] flex-col-reverse gap-3 p-4" />
           </>
         )}
         <div
