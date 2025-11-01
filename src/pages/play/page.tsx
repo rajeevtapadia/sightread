@@ -16,6 +16,7 @@ import {
   useWakeLock,
 } from '@/hooks'
 import { MidiStateEvent, SongSource } from '@/types'
+import { round } from '@/utils'
 import * as RadixToast from '@radix-ui/react-toast'
 import clsx from 'clsx'
 import { useAtomValue } from 'jotai'
@@ -176,10 +177,13 @@ export default function PlaySongPage() {
       setStatsVisible(!statsVisible)
     } else if (evt.code === 'Equal') {
       player.increaseBpm()
+      setToastMsg(`BPM set to ${round(player.getBpmModifierValue() * 100)}%`)
     } else if (evt.code === 'Minus') {
       player.decreaseBpm()
+      setToastMsg(`BPM set to ${round(player.getBpmModifierValue() * 100)}%`)
     } else if (evt.code === 'Semicolon') {
       setSongConfig({ ...songConfig, waiting: !waiting })
+      setToastMsg(`Waiting mode ${waiting ? 'off' : 'on'}`)
     } else if (evt.code === 'KeyP') {
       if (isLooping) {
         handleLoopingToggle(false)
@@ -201,6 +205,7 @@ export default function PlaySongPage() {
     } else if (evt.code === 'KeyO') {
       if (isLooping) {
         player.seek(range[0])
+        setToastMsg('Practice loop reset')
       }
     }
   })
