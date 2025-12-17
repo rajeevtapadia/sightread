@@ -8,9 +8,12 @@ type TextInputProps = {
   error?: boolean
   placeholder?: string
   autoFocus?: boolean
+  min?: number
+  max?: number
+  value?: string | number
 }
 export function TextInput(props: TextInputProps) {
-  const { onChange, name, className, error, type, placeholder, autoFocus } = props
+  const { onChange, name, className, error, type, placeholder, autoFocus, min, max, value } = props
   return (
     <input
       type={type}
@@ -23,6 +26,9 @@ export function TextInput(props: TextInputProps) {
       )}
       placeholder={placeholder}
       autoFocus={autoFocus}
+      min={min}
+      max={max}
+      value={value}
     />
   )
 }

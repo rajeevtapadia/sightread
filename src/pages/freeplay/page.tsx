@@ -17,6 +17,12 @@ export default function FreePlay() {
   const [isMidiModalOpen, setMidiModal] = useState(false)
   const { isRecording, startRecording, stopRecording } = useRecordMidi(midiState)
   const [recordingPreview, setRecordingPreview] = useState('')
+  const [tempoBpm, setTempoBpm] = useState(120)
+  const [timeSignature, setTimeSignature] = useState({ numerator: 4, denominator: 4 })
+
+  // Keep FreePlayer song metadata in sync with UI controls
+  freePlayer.song.bpms = [{ time: 0, bpm: tempoBpm }]
+  freePlayer.song.timeSignature = timeSignature
 
   const handleNoteDown = useCallback(
     (note: number, velocity: number = 80) => {
@@ -78,6 +84,16 @@ export default function FreePlay() {
           isError={synthState.error}
           value={instrumentName}
           onChange={(name) => setInstrumentName(name)}
+          tempo={tempoBpm}
+          onChangeTempo={(nextTempo) => {
+            setTempoBpm(nextTempo)
+            freePlayer.setTempo(nextTempo)
+          }}
+          timeSignature={timeSignature}
+          onChangeTimeSignature={(sig) => {
+            setTimeSignature(sig)
+            freePlayer.setTimeSignature(sig)
+          }}
         />
         <MidiModal isOpen={isMidiModalOpen} onClose={() => setMidiModal(false)} />
         <RecordingModal
@@ -88,7 +104,10 @@ export default function FreePlay() {
         <div className="relative grow">
           <SongVisualizer
             song={freePlayer.song}
-            config={{ visualization: 'falling-notes', noteLabels: 'none' } as SongConfig}
+            config={{
+              visualization: 'falling-notes',
+              noteLabels: 'none',
+            } as SongConfig}
             hand="both"
             handSettings={{ 1: { hand: 'right' } }}
             getTime={() => freePlayer.getTime()}
