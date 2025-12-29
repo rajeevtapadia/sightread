@@ -339,9 +339,9 @@ export default function PlaySongPage() {
       }
     }
 
-    midiState.subscribe(handleMidiEvent)
+    // midiState.subscribe(handleMidiEvent)
     return function cleanup() {
-      midiState.unsubscribe(handleMidiEvent)
+      // midiState.unsubscribe(handleMidiEvent)
     }
   }, [synth, song, songConfig])
 
